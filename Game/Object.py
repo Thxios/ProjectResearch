@@ -1,15 +1,9 @@
 from .imports import *
 
 
-class Object:
-    symbol: np.ndarray
-
-    def __init__(self, width, height, x, y):
+class Coordinate:
+    def __init__(self, x, y):
         self.position = vector(x, y)
-        self.w = width
-        self.h = height
-        self.surface = np.array([[self.symbol for _ in range(self.w)] for _ in range(self.h)])
-        self.v = vector(0, 0)
 
     @property
     def x(self):
@@ -30,5 +24,19 @@ class Object:
     def absolute_move(self, delta: np.ndarray):
         self.position += delta
 
+
+class Object(Coordinate):
+    symbol: np.ndarray
+
+    def __init__(self, x, y, width, height):
+        Coordinate.__init__(self, x, y)
+        self.w = width
+        self.h = height
+        self.surface = np.array([[self.symbol for _ in range(self.h)] for _ in range(self.w)])
+        self.v = vector(0, 0)
+
     def apply_velocity(self):
         self.position += self.v
+
+    def update(self):
+        pass

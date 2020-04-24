@@ -9,12 +9,15 @@ def array2surface(arr: np.ndarray) -> pg.Surface:
 
 class Command:
     command = [
-        0, 0
+        0, 0, 0, 0, 0  # left, right, up, down, fire
     ]
 
     coding = {
-        pg.K_LEFT: 0,
-        pg.K_RIGHT: 1,
+        pg.K_LEFT: LEFT,
+        pg.K_RIGHT: RIGHT,
+        pg.K_UP: UP,
+        pg.K_DOWN: DOWN,
+        pg.K_SPACE: FIRE,
     }
 
     def key_down(self, key):
@@ -53,10 +56,7 @@ class Emulator:
             elif event.type == pg.KEYUP:
                 self.command.key_up(event.key)
 
-        if self.command.command[0]:
-            self.game.player.absolute_move(vector(-1, 0))
-        if self.command.command[1]:
-            self.game.player.absolute_move(vector(1, 0))
+        self.game.set_command(self.command.command)
 
         self.game.loop()
 

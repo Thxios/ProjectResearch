@@ -1,5 +1,8 @@
 from .imports import *
 from .Object import Object
+from .Player import Player
+from .Enemy import Enemy
+from .Bullet import PlayerBullet
 
 
 class Game:
@@ -7,10 +10,21 @@ class Game:
         self.background = np.zeros((SCREEN_WIDTH, SCREEN_HEIGHT, SCENE_CHANNEL))
         self.player = Player(10, 20)
 
+        self.enemies: List[Enemy] = []
+        self.player_bullet: List[PlayerBullet] = []
+
+        self.generate_enemy()
 
     def get_scene(self) -> np.ndarray:
         self.background = np.zeros((SCREEN_WIDTH, SCREEN_HEIGHT, SCENE_CHANNEL))
         self.draw_object(self.player)
+
+        for enemy in self.enemies:
+            self.draw_object(enemy)
+
+        for player_bullet in self.player_bullet:
+            self.background[player_bullet.x, player_bullet.y] = vector(1, 0, 1)
+
         return self.background
 
     def draw_object(self, obj: Object):
@@ -21,12 +35,15 @@ class Game:
 
         if x_end < 0 or y_end < 0:
             return
+        if x_start >= SCREEN_WIDTH or y_start >= SCREEN_HEIGHT:
+            return
 
         obj_x_start = max(-obj.x, 0)
         obj_y_start = max(-obj.y, 0)
         obj_x_end = min(SCREEN_WIDTH - obj.x, obj.w)
         obj_y_end = min(SCREEN_HEIGHT - obj.y, obj.h)
 
+        # print((obj_x_start, obj_x_end), (obj_y_start, obj_y_end))
         # print(self.background[x_start: x_end, y_start: y_end].shape)
         # print(obj.surface[obj_x_start: obj_x_end, obj_y_start: obj_y_end].shape)
 
@@ -38,11 +55,31 @@ class Game:
             ]
 
     def loop(self):
-        pass
+        self.player.update()
+        for enemy in self.enemies:
+            enemy.update()
 
+        i = 0
+        while i < len(self.player_bullet):
+            self.player_bullet[i].update()
+            if self.player_bullet[i].in_screen():
+                i += 1
+            else:
+                del self.player_bullet[i]
+        # print(len(self.player_bullet))
 
-class Player(Object):
-    symbol = np.ones((SCENE_CHANNEL,))
+    def generate_enemy(self):
+        self.enemies.append(Enemy(3, 5, 4, 6))
 
-    def __init__(self, x, y):
-        Object.__init__(self, PLAYER_WIDTH, PLAYER_HEIGHT, x, y)
+    def set_command(self, command: List[int]):
+        if command[LEFT]:
+            self.player.absolute_move(vector(-self.player.move_speed, 0))
+        if command[RIGHT]:
+            self.player.absolute_move(vector(self.player.move_speed, 0))
+        if command[UP]:
+            self.player.absolute_move(vector(0, -self.player.move_speed))
+        if command[DOWN]:
+            self.player.absolute_move(vector(0, self.player.move_speed))
+        if command[FIRE]:
+            if self.player.fire():
+                self.player_bullet.append(PlayerBullet(self.player.x + 1, self.player.y))
