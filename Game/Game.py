@@ -56,8 +56,14 @@ class Game:
 
     def loop(self):
         self.player.update()
-        for enemy in self.enemies:
-            enemy.update()
+
+        i = 0
+        while i < len(self.enemies):
+            if self.enemies[i].y > SCREEN_HEIGHT:
+                del self.enemies[i]
+            else:
+                self.enemies[i].update()
+                i += 1
 
         i = 0
         while i < len(self.player_bullet):
@@ -69,17 +75,12 @@ class Game:
         # print(len(self.player_bullet))
 
     def generate_enemy(self):
-        self.enemies.append(Enemy(3, 5, 4, 6))
+        self.enemies.append(Enemy(3, 4, 6))
 
     def set_command(self, command: List[int]):
-        if command[LEFT]:
-            self.player.absolute_move(vector(-self.player.move_speed, 0))
-        if command[RIGHT]:
-            self.player.absolute_move(vector(self.player.move_speed, 0))
-        if command[UP]:
-            self.player.absolute_move(vector(0, -self.player.move_speed))
-        if command[DOWN]:
-            self.player.absolute_move(vector(0, self.player.move_speed))
+        for movement in (LEFT, RIGHT, UP, DOWN):
+            if command[movement]:
+                self.player.command_move(movement)
         if command[FIRE]:
             if self.player.fire():
                 self.player_bullet.append(PlayerBullet(self.player.x + 1, self.player.y))
