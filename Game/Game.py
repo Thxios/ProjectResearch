@@ -23,7 +23,7 @@ class Game:
             self.draw_object(enemy)
 
         for player_bullet in self.player_bullet:
-            self.background[player_bullet.x, player_bullet.y] = vector(1, 0, 1)
+            self.background[player_bullet.x_int, player_bullet.y_int] = vector(1, 0, 1)
 
         return self.background
 
@@ -43,9 +43,24 @@ class Game:
         obj_x_end = min(SCREEN_WIDTH - obj.x_int, obj.w)
         obj_y_end = min(SCREEN_HEIGHT - obj.y_int, obj.h)
 
+        # print(type(obj_x_start), type(obj_y_start), type(obj_x_end), type(obj_y_end))
+        # print(type(x_start), type(y_start), type(x_end), type(y_end))
+
         # print((obj_x_start, obj_x_end), (obj_y_start, obj_y_end))
+        # print((x_start, x_end), (y_start, y_end))
         # print(self.background[x_start: x_end, y_start: y_end].shape)
         # print(obj.surface[obj_x_start: obj_x_end, obj_y_start: obj_y_end].shape)
+
+        # print(
+        #     self.background[
+        #         x_start: x_end, y_start: y_end
+        #     ]
+        # )
+        # print(
+        #     obj.surface[
+        #         obj_x_start: obj_x_end, obj_y_start: obj_y_end
+        #     ]
+        # )
 
         self.background[
             x_start: x_end, y_start: y_end
