@@ -21,6 +21,14 @@ class Coordinate:
     def y(self, y):
         self.position[1] = y
 
+    @property
+    def x_int(self):
+        return round(self.position[0])
+
+    @property
+    def y_int(self):
+        return round(self.position[1])
+
     def absolute_move(self, delta: np.ndarray):
         self.position += delta
 
