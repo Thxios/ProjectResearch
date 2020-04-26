@@ -3,7 +3,7 @@ from .imports import *
 
 class Coordinate:
     def __init__(self, x, y):
-        self.position = vector(x, y)
+        self.position = vector(x, y, dtype=np.float)
 
     @property
     def x(self):
@@ -23,11 +23,11 @@ class Coordinate:
 
     @property
     def x_int(self):
-        return round(self.position[0])
+        return int(round(self.position[0]))
 
     @property
     def y_int(self):
-        return round(self.position[1])
+        return int(round(self.position[1]))
 
     def absolute_move(self, delta: np.ndarray):
         self.position += delta
@@ -41,7 +41,7 @@ class Object(Coordinate):
         self.w = width
         self.h = height
         self.surface = np.array([[self.symbol for _ in range(self.h)] for _ in range(self.w)])
-        self.v = vector(0, 0)
+        self.v = vector(0, 0, dtype=np.float)
 
     def apply_velocity(self):
         self.position += self.v
