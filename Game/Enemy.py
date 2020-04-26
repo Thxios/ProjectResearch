@@ -13,15 +13,13 @@ class Enemy(Object):
     def __init__(self, x, w, h):
         Object.__init__(self, x, -h, w, h)
 
-        self.float_position = vector(self.x, self.y, dtype=np.float)
+        # self.float_position = vector(self.x, self.y, dtype=np.float)
         self.v = vector(0, self.vertical_speed)
         self.change_delay = 0
 
     def update(self):
         self.change_direction()
-        self.float_position += self.v
-        self.x = round(self.float_position[0])
-        self.y = round(self.float_position[1])
+        self.position += self.v
         # print(self.position)
 
     def change_direction(self):
