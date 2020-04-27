@@ -31,12 +31,13 @@ class Command:
 
 class Emulator:
     screen: pg.Surface
-    running = False
     command = Command()
     clock: pg.time.Clock
 
     def __init__(self, game: Game):
         self.game = game
+        self.running = False
+        self.cnt = 0
 
     def run(self):
         pg.init()
@@ -44,10 +45,13 @@ class Emulator:
 
         self.running = True
         self.clock = pg.time.Clock()
+
         while self.running:
             self.main_loop()
 
     def main_loop(self):
+        self.cnt += 1
+
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.running = False
@@ -62,7 +66,7 @@ class Emulator:
 
         self.screen.blit(
             pg.transform.scale(
-                array2surface(self.game.get_scene()),
+                array2surface(self.game.draw_scene()),
                 (RENDER_WIDTH, RENDER_HEIGHT)
             ),
             (0, 0)
@@ -70,4 +74,6 @@ class Emulator:
 
         pg.display.update()
         self.clock.tick(60)
+        if self.cnt % 100 == 0:
+            print(self.clock.get_fps())
 

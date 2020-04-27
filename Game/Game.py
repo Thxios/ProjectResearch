@@ -2,7 +2,7 @@ from .imports import *
 from .Object import Object
 from .Player import Player
 from .Enemy import Enemy
-from .Bullet import PlayerBullet
+from .Bullet import PlayerBullet, EnemyBullet
 
 
 class Game:
@@ -12,18 +12,24 @@ class Game:
 
         self.enemies: List[Enemy] = []
         self.player_bullet: List[PlayerBullet] = []
+        self.enemy_bullet: List[EnemyBullet] = []
 
         self.generate_enemy()
+        self.generate_enemy()
+        self.generate_enemy()
 
-    def get_scene(self) -> np.ndarray:
+    def draw_scene(self) -> np.ndarray:
         self.background = np.zeros((SCREEN_WIDTH, SCREEN_HEIGHT, SCENE_CHANNEL))
         self.draw_object(self.player)
 
         for enemy in self.enemies:
             self.draw_object(enemy)
 
+        for enemy_bullet in self.enemy_bullet:
+            self.background[enemy_bullet.x_int, enemy_bullet.y_int] = EnemyBullet.symbol
+
         for player_bullet in self.player_bullet:
-            self.background[player_bullet.x_int, player_bullet.y_int] = vector(1, 0, 1)
+            self.background[player_bullet.x_int, player_bullet.y_int] = PlayerBullet.symbol
 
         return self.background
 
@@ -78,6 +84,7 @@ class Game:
                 del self.enemies[i]
             else:
                 self.enemies[i].update()
+                self.enemies[i].fire(self.enemy_bullet)
                 i += 1
 
         i = 0
@@ -87,10 +94,17 @@ class Game:
                 i += 1
             else:
                 del self.player_bullet[i]
-        # print(len(self.player_bullet))
+
+        i = 0
+        while i < len(self.enemy_bullet):
+            self.enemy_bullet[i].update()
+            if self.enemy_bullet[i].in_screen():
+                i += 1
+            else:
+                del self.enemy_bullet[i]
 
     def generate_enemy(self):
-        self.enemies.append(Enemy(3, 4, 6))
+        self.enemies.append(Enemy(randint(5, SCREEN_WIDTH - 5 - 4), 4, 6))
 
     def set_command(self, command: List[int]):
         for movement in (LEFT, RIGHT, UP, DOWN):
