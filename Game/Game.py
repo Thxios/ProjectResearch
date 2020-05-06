@@ -8,6 +8,7 @@ from .Bullet import PlayerBullet, EnemyBullet
 class Game:
     def __init__(self):
         self.background = np.zeros((SCREEN_WIDTH, SCREEN_HEIGHT, SCENE_CHANNEL))
+        self.field = np.zeros((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.player = Player(10, 20)
 
         self.enemies: List[Enemy] = []
@@ -33,7 +34,7 @@ class Game:
 
         return self.background
 
-    def draw_object(self, obj: Object):
+    def draw_object(self, obj: Object, field=False):
         x_start = max(obj.x_int, 0)
         y_start = max(obj.y_int, 0)
         x_end = min(obj.x_int + obj.w, SCREEN_WIDTH)
@@ -68,23 +69,20 @@ class Game:
         #     ]
         # )
 
-        self.background[
-            x_start: x_end, y_start: y_end
-        ] = \
-            obj.surface[
-                obj_x_start: obj_x_end, obj_y_start: obj_y_end
-            ]
+        if field:
+            self.field[x_start: x_end, y_start: y_end] = obj.code
+        else:
+            self.background[x_start: x_end, y_start: y_end] = \
+                obj.surface[obj_x_start: obj_x_end, obj_y_start: obj_y_end]
 
-    def loop(self):
-        self.player.update()
-
+    def update(self):
         i = 0
         while i < len(self.enemies):
             if self.enemies[i].y > SCREEN_HEIGHT:
                 del self.enemies[i]
             else:
                 self.enemies[i].update()
-                self.enemies[i].fire(self.enemy_bullet)
+                # self.enemies[i].fire(self.enemy_bullet)
                 i += 1
 
         i = 0
@@ -102,6 +100,33 @@ class Game:
                 i += 1
             else:
                 del self.enemy_bullet[i]
+
+    def update_field(self):
+        self.field = np.zeros((SCREEN_WIDTH, SCREEN_HEIGHT))
+        for enemy in self.enemies:
+            self.draw_object(enemy, True)
+
+        i = 0
+        while i < len(self.player_bullet):
+            if self.field[self.player_bullet[i].x_int, self.player_bullet[i].y_int] == Enemy.code:
+
+                j = 0
+                while j < len(self.enemies):
+                    if self.enemies[j].collide_point((self.player_bullet[i].x_int, self.player_bullet[i].y_int)):
+                        self.enemies[j].hit()
+                        if not self.enemies[j].alive():
+                            del self.enemies[j]
+                        break
+                    j += 1
+
+                del self.player_bullet[i]
+            else:
+                i += 1
+
+    def loop(self):
+        self.player.update()
+        self.update()
+        self.update_field()
 
     def generate_enemy(self):
         self.enemies.append(Enemy(randint(5, SCREEN_WIDTH - 5 - 4), 4, 6))
