@@ -4,6 +4,7 @@ from .Object import Object
 
 class Player(Object):
     symbol = np.ones((SCENE_CHANNEL,))
+
     move_speed = 0.5
     max_fire_delay = 20
 

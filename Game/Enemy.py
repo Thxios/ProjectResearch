@@ -5,6 +5,7 @@ from .Bullet import EnemyBullet
 
 class Enemy(Object):
     symbol = vector(1, 0, 0)
+    code = 1
 
     vertical_speed = 0.05
     horizontal_speed = 0.1
@@ -20,6 +21,7 @@ class Enemy(Object):
         self.v = vector(0, self.vertical_speed)
         self.change_delay = 0
         self.fire_delay = self.fire_delay_max
+        self.hp = 10
 
     def update(self):
         self.change_direction()
@@ -52,6 +54,16 @@ class Enemy(Object):
             bullets.append(EnemyBullet(origin, origin + vector(-0.414, 1)))
             bullets.append(EnemyBullet(origin, origin + vector(0.414, 1)))
             self.fire_delay = self.fire_delay_max
+
+    def hit(self):
+        self.hp -= 1
+        # print(self, self.hp)
+
+    def alive(self) -> bool:
+        if self.hp <= 0:
+            return False
+
+        return True
 
 
 class Obstacle(Object):

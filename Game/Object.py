@@ -35,6 +35,7 @@ class Coordinate:
 
 class Object(Coordinate):
     symbol: np.ndarray
+    code: int
 
     def __init__(self, x, y, width, height):
         Coordinate.__init__(self, x, y)
@@ -48,3 +49,7 @@ class Object(Coordinate):
 
     def update(self):
         pass
+
+    def collide_point(self, point):
+        x, y = point[0], point[1]
+        return 0 <= x - self.x_int < self.w and 0 <= y - self.y_int < self.h
