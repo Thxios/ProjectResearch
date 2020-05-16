@@ -1,5 +1,5 @@
 import tkinter as tk
-from GomokuSample.GUI import BoardFrame
+from GomokuSample.gui import BoardFrame
 
 
 if __name__ == '__main__':

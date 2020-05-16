@@ -42,12 +42,12 @@ class _LineChecker:
 class _Checker:
     checker: List[_LineChecker]
 
-    def check(self, lines, turn=1):
+    def check(self, lines, turn):
         cnt = 0
         for line in lines:
             for checker in self.checker:
                 if checker.check(line, turn):
-                    print(checker)
+                    # print(checker)
                     cnt += 1
                     break
         return cnt
