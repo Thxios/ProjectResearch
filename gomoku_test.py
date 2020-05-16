@@ -1,6 +1,6 @@
 from Gomoku.lib import *
 from Gomoku.Game import Game
-from Gomoku.ForbiddenChecker import _Checker
+from Gomoku.ForbiddenChecker import _LineChecker
 
 
 game = Game()

@@ -1,7 +1,7 @@
 from .lib import *
 
 
-class _Checker:
+class _LineChecker:
     def __init__(self, multiply, compare):
         self.mul = multiply
         self.comp = compare
@@ -36,11 +36,11 @@ class _Checker:
                 mul[i] = 1
                 if pattern[i] == 'X':
                     comp[i] = 1
-        return _Checker(mul, comp)
+        return _LineChecker(mul, comp)
 
 
-class _LineChecker:
-    checker: List[_Checker]
+class _Checker:
+    checker: List[_LineChecker]
 
     def check(self, lines, turn=1):
         cnt = 0
@@ -53,43 +53,43 @@ class _LineChecker:
         return cnt
 
 
-class ThreeChecker(_LineChecker):
+class ThreeChecker(_Checker):
     checker = [
-        _Checker.from_str('???.XX.X.'),
-        _Checker.from_str('???.X.XX.'),
-        _Checker.from_str('???.XXX..'),
-        _Checker.from_str('??..XXX.?'),
+        _LineChecker.from_str('???.XX.X.'),
+        _LineChecker.from_str('???.X.XX.'),
+        _LineChecker.from_str('???.XXX..'),
+        _LineChecker.from_str('??..XXX.?'),
 
-        _Checker.from_str('??.XXX..?'),
-        _Checker.from_str('??.XX.X.?'),
-        _Checker.from_str('?.X.XX.??'),
+        _LineChecker.from_str('??.XXX..?'),
+        _LineChecker.from_str('??.XX.X.?'),
+        _LineChecker.from_str('?.X.XX.??'),
     ]
 
 
-class FourChecker(_LineChecker):
+class FourChecker(_Checker):
     checker = [
-        _Checker.from_str('???.XXXX?'),
-        _Checker.from_str('??.XXXX??'),
-        _Checker.from_str('????XXXX.'),
-        _Checker.from_str('???XXXX.?'),
+        _LineChecker.from_str('???.XXXX?'),
+        _LineChecker.from_str('??.XXXX??'),
+        _LineChecker.from_str('????XXXX.'),
+        _LineChecker.from_str('???XXXX.?'),
 
-        _Checker.from_str('????XX.XX'),
-        _Checker.from_str('???XX.XX?'),
+        _LineChecker.from_str('????XX.XX'),
+        _LineChecker.from_str('???XX.XX?'),
     ]
 
 
-class FiveChecker(_LineChecker):
+class FiveChecker(_Checker):
     checker = [
-        _Checker.from_str('????XXXXX'),
-        _Checker.from_str('???XXXXX?'),
-        _Checker.from_str('??XXXXX??'),
+        _LineChecker.from_str('????XXXXX'),
+        _LineChecker.from_str('???XXXXX?'),
+        _LineChecker.from_str('??XXXXX??'),
     ]
 
 
-class SixChecker(_LineChecker):
+class SixChecker(_Checker):
     checker = [
-        _Checker.from_str('???XXXXXX'),
-        _Checker.from_str('??XXXXXX?'),
+        _LineChecker.from_str('???XXXXXX'),
+        _LineChecker.from_str('??XXXXXX?'),
     ]
 
 
