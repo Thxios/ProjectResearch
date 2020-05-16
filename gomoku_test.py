@@ -1,6 +1,5 @@
 from Gomoku.lib import *
 from Gomoku.Game import Game
-from Gomoku.ForbiddenChecker import _LineChecker
 
 
 game = Game()
@@ -18,14 +17,4 @@ game.show()
 game.check_forbidden(3, 3)
 
 
-# check = Checker(
-#     vector(0, 0, 1, 1, 1, 1, 1, 1, 0),
-#     vector(0, 0, 0, 1, 1, 0, 1, 0, 0)
-# )
-# check = Checker.from_str('??.XX.X.?')
-# print(check)
-#
-# print(check.check(vector(2, 2, 0, 1, 1, 0, 1, 0, 0), 1))
-# print(check.check(vector(2, 2, 2, 1, 1, 0, 1, 0, 0), 1))
-# print(check.check(vector(-1, 0, 1, 0, 1, 1, 0, 2, -1), 1))
 
