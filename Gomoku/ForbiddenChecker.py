@@ -94,4 +94,7 @@ class SixChecker(_LineChecker):
 
 
 ThreeChecker = ThreeChecker()
+FourChecker = FourChecker()
+FiveChecker = FiveChecker()
+SixChecker = SixChecker()
 
