@@ -1,5 +1,5 @@
 import tkinter as tk
-from .Game import Game
+from .game import Game
 from .lib import *
 
 

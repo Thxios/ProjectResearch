@@ -1,5 +1,5 @@
 from .lib import *
-from .ForbiddenChecker import ThreeChecker, FourChecker, FiveChecker, SixChecker
+from .validation import ThreeChecker, FourChecker, FiveChecker, SixChecker
 
 
 class Game:

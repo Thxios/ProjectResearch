@@ -1,5 +1,5 @@
 from Gomoku.lib import *
-from Gomoku.Game import Game
+from Gomoku.game import Game
 
 
 game = Game()
