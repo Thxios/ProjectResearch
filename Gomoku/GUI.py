@@ -1,6 +1,7 @@
+from lib import *
+
 import tkinter as tk
 from .game import Game
-from .lib import *
 
 
 class BoardCanvas(tk.Canvas):
