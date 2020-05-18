@@ -10,8 +10,3 @@ class Exploration(Heap):
     def compare(v1: Node, v2: Node) -> bool:
         return v1.ucb > v2.ucb
 
-
-class Exploitation(Heap):
-    def set_to(self, value: Node, idx):
-        value.exploitation_idx = idx
-
